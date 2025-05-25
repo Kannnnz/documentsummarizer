@@ -1,0 +1,129 @@
+{% extends "base.html" %}
+
+{% block title %}Register - Document Summarizer UNNES{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-6 col-lg-5">
+            <div class="card shadow-sm mt-5">
+                <div class="card-header bg-success text-white text-center">
+                    <h4 class="mb-0">
+                        <i class="fas fa-user-plus me-2"></i>
+                        Registrasi
+                    </h4>
+                </div>
+                <div class="card-body p-4">
+                    <form method="POST">
+                        <div class="mb-3">
+                            <label for="name" class="form-label">
+                                <i class="fas fa-user me-1"></i>
+                                Nama Lengkap
+                            </label>
+                            <input type="text" class="form-control" id="name" name="name" required 
+                                   placeholder="Masukkan nama lengkap Anda">
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="email" class="form-label">
+                                <i class="fas fa-envelope me-1"></i>
+                                Email UNNES
+                            </label>
+                            <input type="email" class="form-control" id="email" name="email" required 
+                                   placeholder="nama@mail.unnes.ac.id atau nama@students.unnes.ac.id">
+                            <div class="form-text">
+                                Hanya email dengan domain UNNES yang diperbolehkan
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="password" class="form-label">
+                                <i class="fas fa-lock me-1"></i>
+                                Password
+                            </label>
+                            <input type="password" class="form-control" id="password" name="password" required minlength="6">
+                            <div class="form-text">
+                                Minimal 6 karakter
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="confirm_password" class="form-label">
+                                <i class="fas fa-lock me-1"></i>
+                                Konfirmasi Password
+                            </label>
+                            <input type="password" class="form-control" id="confirm_password" name="confirm_password" required minlength="6">
+                        </div>
+                        
+                        <div class="mb-3 form-check">
+                            <input type="checkbox" class="form-check-input" id="terms" required>
+                            <label class="form-check-label" for="terms">
+                                Saya setuju dengan syarat dan ketentuan penggunaan
+                            </label>
+                        </div>
+                        
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-success">
+                                <i class="fas fa-user-plus me-2"></i>
+                                Daftar
+                            </button>
+                        </div>
+                    </form>
+                    
+                    <hr class="my-4">
+                    
+                    <div class="text-center">
+                        <p class="mb-0">Sudah punya akun?</p>
+                        <a href="{{ url_for('login') }}" class="btn btn-outline-primary">
+                            <i class="fas fa-sign-in-alt me-2"></i>
+                            Login Sekarang
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Registration Info -->
+            <div class="card mt-4 border-warning">
+                <div class="card-body">
+                    <h6 class="card-title text-warning">
+                        <i class="fas fa-exclamation-triangle me-2"></i>
+                        Ketentuan Registrasi
+                    </h6>
+                    <ul class="list-unstyled mb-0 small">
+                        <li><i class="fas fa-graduation-cap text-primary me-2"></i><strong>Dosen:</strong> @mail.unnes.ac.id (akses admin otomatis)</li>
+                        <li><i class="fas fa-user-graduate text-info me-2"></i><strong>Mahasiswa:</strong> @students.unnes.ac.id (akses user)</li>
+                        <li><i class="fas fa-shield-alt text-success me-2"></i>Data Anda aman dan hanya digunakan untuk keperluan akademik</li>
+                        <li><i class="fas fa-file-alt text-secondary me-2"></i>Sistem ini khusus untuk analisis dokumen penelitian</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const password = document.getElementById('password');
+    const confirmPassword = document.getElementById('confirm_password');
+    const form = document.querySelector('form');
+    
+    function validatePassword() {
+        if (password.value !== confirmPassword.value) {
+            confirmPassword.setCustomValidity('Password tidak cocok');
+        } else {
+            confirmPassword.setCustomValidity('');
+        }
+    }
+    
+    password.addEventListener('change', validatePassword);
+    confirmPassword.addEventListener('keyup', validatePassword);
+    
+    form.addEventListener('submit', function(e) {
+        if (password.value !== confirmPassword.value) {
+            e.preventDefault();
+            alert('Password dan konfirmasi password tidak cocok!');
+        }
+    });
+});
+</script>
+{% endblock %}

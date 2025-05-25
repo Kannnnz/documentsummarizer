@@ -1,0 +1,771 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Document Summarizer</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f5f7fa;
+            color: #333;
+        }
+
+        .dashboard-container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            width: 280px;
+            background: linear-gradient(180deg, #2c3e50 0%, #34495e 100%);
+            color: white;
+            padding: 0;
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+        }
+
+        .sidebar-header {
+            padding: 2rem 1.5rem;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .sidebar-header h2 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .sidebar-header p {
+            opacity: 0.8;
+            font-size: 0.9rem;
+        }
+
+        .sidebar-nav {
+            padding: 1rem 0;
+        }
+
+        .nav-item {
+            display: block;
+            padding: 1rem 1.5rem;
+            color: white;
+            text-decoration: none;
+            transition: all 0.3s;
+            border-left: 3px solid transparent;
+        }
+
+        .nav-item:hover, .nav-item.active {
+            background-color: rgba(255,255,255,0.1);
+            border-left-color: #3498db;
+        }
+
+        .nav-item i {
+            margin-right: 0.5rem;
+            width: 20px;
+        }
+
+        .main-content {
+            flex: 1;
+            margin-left: 280px;
+            padding: 2rem;
+        }
+
+        .header {
+            background: white;
+            padding: 1.5rem 2rem;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header h1 {
+            color: #2c3e50;
+            font-size: 2rem;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .logout-btn {
+            background: #e74c3c;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: background 0.3s;
+        }
+
+        .logout-btn:hover {
+            background: #c0392b;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            text-align: center;
+            transition: transform 0.3s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .stat-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: #7f8c8d;
+            font-size: 0.9rem;
+        }
+
+        .content-section {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+            display: none;
+        }
+
+        .content-section.active {
+            display: block;
+        }
+
+        .section-header {
+            padding: 1.5rem 2rem;
+            border-bottom: 1px solid #ecf0f1;
+            display: flex;
+            justify-content: between;
+            align-items: center;
+        }
+
+        .section-title {
+            color: #2c3e50;
+            font-size: 1.5rem;
+        }
+
+        .section-content {
+            padding: 2rem;
+        }
+
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+
+        .table th,
+        .table td {
+            text-align: left;
+            padding: 1rem;
+            border-bottom: 1px solid #ecf0f1;
+        }
+
+        .table th {
+            background-color: #f8f9fa;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .table tr:hover {
+            background-color: #f8f9fa;
+        }
+
+        .badge {
+            padding: 0.25rem 0.5rem;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .badge-success {
+            background-color: #d4edda;
+            color: #155724;
+        }
+
+        .badge-warning {
+            background-color: #fff3cd;
+            color: #856404;
+        }
+
+        .badge-danger {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+
+        .btn {
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+        }
+
+        .btn-primary {
+            background-color: #3498db;
+            color: white;
+        }
+
+        .btn-danger {
+            background-color: #e74c3c;
+            color: white;
+        }
+
+        .btn-warning {
+            background-color: #f39c12;
+            color: white;
+        }
+
+        .btn:hover {
+            opacity: 0.9;
+            transform: translateY(-1px);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: #3498db;
+            box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+        }
+
+        .alert {
+            padding: 1rem;
+            border-radius: 5px;
+            margin-bottom: 1rem;
+        }
+
+        .alert-success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .alert-danger {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+                transition: transform 0.3s;
+            }
+
+            .sidebar.open {
+                transform: translateX(0);
+            }
+
+            .main-content {
+                margin-left: 0;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-container">
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h2>Admin Panel</h2>
+                <p>Document Summarizer</p>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="#" class="nav-item active" onclick="showSection('dashboard')">
+                    <i>📊</i> Dashboard
+                </a>
+                <a href="#" class="nav-item" onclick="showSection('users')">
+                    <i>👥</i> Kelola Pengguna
+                </a>
+                <a href="#" class="nav-item" onclick="showSection('documents')">
+                    <i>📄</i> Kelola Dokumen
+                </a>
+                <a href="#" class="nav-item" onclick="showSection('chats')">
+                    <i>💬</i> Riwayat Chat
+                </a>
+                <a href="#" class="nav-item" onclick="showSection('settings')">
+                    <i>⚙️</i> Pengaturan
+                </a>
+                <a href="#" class="nav-item" onclick="showSection('logs')">
+                    <i>📋</i> Log Sistem
+                </a>
+            </nav>
+        </aside>
+
+        <main class="main-content">
+            <div class="header">
+                <h1>Dashboard Admin</h1>
+                <div class="user-info">
+                    <span>Selamat datang, Admin</span>
+                    <a href="/logout" class="logout-btn">Logout</a>
+                </div>
+            </div>
+
+            <!-- Dashboard Section -->
+            <div id="dashboard" class="content-section active">
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon">👥</div>
+                        <div class="stat-number" id="total-users">0</div>
+                        <div class="stat-label">Total Pengguna</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">📄</div>
+                        <div class="stat-number" id="total-documents">0</div>
+                        <div class="stat-label">Dokumen Diupload</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">💬</div>
+                        <div class="stat-number" id="total-chats">0</div>
+                        <div class="stat-label">Total Chat</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">🔥</div>
+                        <div class="stat-number" id="active-users">0</div>
+                        <div class="stat-label">Pengguna Aktif</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Users Section -->
+            <div id="users" class="content-section">
+                <div class="section-header">
+                    <h2 class="section-title">Kelola Pengguna</h2>
+                </div>
+                <div class="section-content">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Email</th>
+                                <th>Nama</th>
+                                <th>Tipe</th>
+                                <th>Status</th>
+                                <th>Bergabung</th>
+                                <th>Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody id="users-table">
+                            <!-- Data will be loaded here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Documents Section -->
+            <div id="documents" class="content-section">
+                <div class="section-header">
+                    <h2 class="section-title">Kelola Dokumen</h2>
+                </div>
+                <div class="section-content">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Nama File</th>
+                                <th>Pengguna</th>
+                                <th>Ukuran</th>
+                                <th>Tanggal Upload</th>
+                                <th>Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody id="documents-table">
+                            <!-- Data will be loaded here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Chats Section -->
+            <div id="chats" class="content-section">
+                <div class="section-header">
+                    <h2 class="section-title">Riwayat Chat</h2>
+                </div>
+                <div class="section-content">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Pengguna</th>
+                                <th>Dokumen</th>
+                                <th>Pesan Terakhir</th>
+                                <th>Tanggal</th>
+                                <th>Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody id="chats-table">
+                            <!-- Data will be loaded here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Settings Section -->
+            <div id="settings" class="content-section">
+                <div class="section-header">
+                    <h2 class="section-title">Pengaturan Sistem</h2>
+                </div>
+                <div class="section-content">
+                    <form id="settings-form">
+                        <div class="form-group">
+                            <label class="form-label">Maksimal Upload File</label>
+                            <input type="number" class="form-control" id="max-files" value="5">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Maksimal Ukuran File (MB)</label>
+                            <input type="number" class="form-control" id="max-size" value="16">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Model LLM Server URL</label>
+                            <input type="url" class="form-control" id="llm-url" value="http://localhost:1234">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Timeout Request (detik)</label>
+                            <input type="number" class="form-control" id="timeout" value="30">
+                        </div>
+                        <button type="submit" class="btn btn-primary">Simpan Pengaturan</button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Logs Section -->
+            <div id="logs" class="content-section">
+                <div class="section-header">
+                    <h2 class="section-title">Log Sistem</h2>
+                </div>
+                <div class="section-content">
+                    <div id="logs-container" style="height: 400px; overflow-y: auto; background: #f8f9fa; padding: 1rem; border-radius: 5px; font-family: monospace;">
+                        <!-- Logs will be loaded here -->
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        function showSection(sectionId) {
+            // Hide all sections
+            document.querySelectorAll('.content-section').forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            // Remove active class from all nav items
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            
+            // Show selected section
+            document.getElementById(sectionId).classList.add('active');
+            
+            // Add active class to clicked nav item
+            event.target.classList.add('active');
+            
+            // Load data for the section
+            loadSectionData(sectionId);
+        }
+
+        function loadSectionData(sectionId) {
+            switch(sectionId) {
+                case 'dashboard':
+                    loadDashboardStats();
+                    break;
+                case 'users':
+                    loadUsers();
+                    break;
+                case 'documents':
+                    loadDocuments();
+                    break;
+                case 'chats':
+                    loadChats();
+                    break;
+                case 'logs':
+                    loadLogs();
+                    break;
+            }
+        }
+
+        function loadDashboardStats() {
+            fetch('/admin/api/stats')
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('total-users').textContent = data.total_users || 0;
+                    document.getElementById('total-documents').textContent = data.total_documents || 0;
+                    document.getElementById('total-chats').textContent = data.total_chats || 0;
+                    document.getElementById('active-users').textContent = data.active_users || 0;
+                })
+                .catch(error => console.error('Error loading stats:', error));
+        }
+
+        function loadUsers() {
+            fetch('/admin/api/users')
+                .then(response => response.json())
+                .then(data => {
+                    const tbody = document.getElementById('users-table');
+                    tbody.innerHTML = '';
+                    
+                    data.forEach(user => {
+                        const row = document.createElement('tr');
+                        row.innerHTML = `
+                            <td>${user.id}</td>
+                            <td>${user.email}</td>
+                            <td>${user.name}</td>
+                            <td><span class="badge ${user.is_admin ? 'badge-warning' : 'badge-success'}">${user.is_admin ? 'Admin' : 'User'}</span></td>
+                            <td><span class="badge badge-success">Aktif</span></td>
+                            <td>${new Date(user.created_at).toLocaleDateString('id-ID')}</td>
+                            <td>
+                                <button class="btn btn-danger" onclick="deleteUser(${user.id})">Hapus</button>
+                            </td>
+                        `;
+                        tbody.appendChild(row);
+                    });
+                })
+                .catch(error => console.error('Error loading users:', error));
+        }
+
+        function loadDocuments() {
+            fetch('/admin/api/documents')
+                .then(response => response.json())
+                .then(data => {
+                    const tbody = document.getElementById('documents-table');
+                    tbody.innerHTML = '';
+                    
+                    data.forEach(doc => {
+                        const row = document.createElement('tr');
+                        row.innerHTML = `
+                            <td>${doc.id}</td>
+                            <td>${doc.filename}</td>
+                            <td>${doc.user_email}</td>
+                            <td>${(doc.file_size / (1024*1024)).toFixed(2)} MB</td>
+                            <td>${new Date(doc.uploaded_at).toLocaleDateString('id-ID')}</td>
+                            <td>
+                                <button class="btn btn-danger" onclick="deleteDocument(${doc.id})">Hapus</button>
+                            </td>
+                        `;
+                        tbody.appendChild(row);
+                    });
+                })
+                .catch(error => console.error('Error loading documents:', error));
+        }
+
+        function loadChats() {
+            fetch('/admin/api/chats')
+                .then(response => response.json())
+                .then(data => {
+                    const tbody = document.getElementById('chats-table');
+                    tbody.innerHTML = '';
+                    
+                    data.forEach(chat => {
+                        const row = document.createElement('tr');
+                        row.innerHTML = `
+                            <td>${chat.id}</td>
+                            <td>${chat.user_email}</td>
+                            <td>${chat.document_name || 'N/A'}</td>
+                            <td>${chat.last_message.substring(0, 50)}...</td>
+                            <td>${new Date(chat.created_at).toLocaleDateString('id-ID')}</td>
+                            <td>
+                                <button class="btn btn-primary" onclick="viewChat(${chat.id})">Lihat</button>
+                                <button class="btn btn-danger" onclick="deleteChat(${chat.id})">Hapus</button>
+                            </td>
+                        `;
+                        tbody.appendChild(row);
+                    });
+                })
+                .catch(error => console.error('Error loading chats:', error));
+        }
+
+        function loadLogs() {
+            fetch('/admin/api/logs')
+                .then(response => response.json())
+                .then(data => {
+                    const container = document.getElementById('logs-container');
+                    container.innerHTML = '';
+                    
+                    data.forEach(log => {
+                        const logEntry = document.createElement('div');
+                        logEntry.style.marginBottom = '0.5rem';
+                        logEntry.innerHTML = `<span style="color: #666;">[${log.timestamp}]</span> <span style="color: ${getLogColor(log.level)};">${log.level}</span>: ${log.message}`;
+                        container.appendChild(logEntry);
+                    });
+                    
+                    container.scrollTop = container.scrollHeight;
+                })
+                .catch(error => console.error('Error loading logs:', error));
+        }
+
+        function getLogColor(level) {
+            switch(level.toLowerCase()) {
+                case 'error': return '#e74c3c';
+                case 'warning': return '#f39c12';
+                case 'info': return '#3498db';
+                default: return '#2c3e50';
+            }
+        }
+
+        function deleteUser(userId) {
+            if (confirm('Apakah Anda yakin ingin menghapus pengguna ini?')) {
+                fetch(`/admin/api/users/${userId}`, {
+                    method: 'DELETE'
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert('Pengguna berhasil dihapus');
+                        loadUsers();
+                    } else {
+                        alert('Gagal menghapus pengguna: ' + data.error);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Terjadi kesalahan saat menghapus pengguna');
+                });
+            }
+        }
+
+        function deleteDocument(docId) {
+            if (confirm('Apakah Anda yakin ingin menghapus dokumen ini?')) {
+                fetch(`/admin/api/documents/${docId}`, {
+                    method: 'DELETE'
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert('Dokumen berhasil dihapus');
+                        loadDocuments();
+                    } else {
+                        alert('Gagal menghapus dokumen: ' + data.error);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Terjadi kesalahan saat menghapus dokumen');
+                });
+            }
+        }
+
+        function deleteChat(chatId) {
+            if (confirm('Apakah Anda yakin ingin menghapus riwayat chat ini?')) {
+                fetch(`/admin/api/chats/${chatId}`, {
+                    method: 'DELETE'
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert('Riwayat chat berhasil dihapus');
+                        loadChats();
+                    } else {
+                        alert('Gagal menghapus riwayat chat: ' + data.error);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Terjadi kesalahan saat menghapus riwayat chat');
+                });
+            }
+        }
+
+        function viewChat(chatId) {
+            window.open(`/admin/chat/${chatId}`, '_blank');
+        }
+
+        // Settings form submission
+        document.getElementById('settings-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const settings = {
+                max_files: document.getElementById('max-files').value,
+                max_size: document.getElementById('max-size').value,
+                llm_url: document.getElementById('llm-url').value,
+                timeout: document.getElementById('timeout').value
+            };
+
+            fetch('/admin/api/settings', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(settings)
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert('Pengaturan berhasil disimpan');
+                } else {
+                    alert('Gagal menyimpan pengaturan: ' + data.error);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Terjadi kesalahan saat menyimpan pengaturan');
+            });
+        });
+
+        // Load dashboard on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            loadDashboardStats();
+        });
+
+        // Auto refresh stats every 30 seconds
+        setInterval(function() {
+            if (document.getElementById('dashboard').classList.contains('active')) {
+                loadDashboardStats();
+            }
+        }, 30000);
+    </script>
+</body>
+</html>

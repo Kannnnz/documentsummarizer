@@ -1,0 +1,186 @@
+{% extends "base.html" %}
+
+{% block title %}Document Summarizer - UNNES{% endblock %}
+
+{% block content %}
+<div class="container">
+    <!-- Hero Section -->
+    <div class="row align-items-center min-vh-100 py-5">
+        <div class="col-lg-6">
+            <h1 class="display-4 fw-bold text-primary mb-4">
+                Document Summarizer
+            </h1>
+            <p class="lead mb-4">
+                Sistem pintar untuk menganalisis dan merangkum dokumen akademik khususnya paper penelitian dan informasi tentang Universitas Negeri Semarang (UNNES).
+            </p>
+            
+            <div class="row mb-4">
+                <div class="col-md-6 mb-3">
+                    <div class="d-flex align-items-center">
+                        <i class="bi bi-file-earmark-text text-primary fs-3 me-3"></i>
+                        <div>
+                            <h5 class="mb-1">Upload Multiple Files</h5>
+                            <p class="text-muted mb-0">Upload hingga 5 dokumen sekaligus</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <div class="d-flex align-items-center">
+                        <i class="bi bi-chat-dots text-primary fs-3 me-3"></i>
+                        <div>
+                            <h5 class="mb-1">Smart Chat</h5>
+                            <p class="text-muted mb-0">Tanya jawab interaktif dengan AI</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <div class="d-flex align-items-center">
+                        <i class="bi bi-question-circle text-primary fs-3 me-3"></i>
+                        <div>
+                            <h5 class="mb-1">Predefined Questions</h5>
+                            <p class="text-muted mb-0">Pertanyaan siap pakai untuk analisis</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <div class="d-flex align-items-center">
+                        <i class="bi bi-memory text-primary fs-3 me-3"></i>
+                        <div>
+                            <h5 class="mb-1">Chat History</h5>
+                            <p class="text-muted mb-0">Riwayat percakapan tersimpan</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="d-flex gap-3">
+                <a href="{{ url_for('register') }}" class="btn btn-primary btn-lg">
+                    <i class="bi bi-person-plus"></i> Daftar Sekarang
+                </a>
+                <a href="{{ url_for('login') }}" class="btn btn-outline-primary btn-lg">
+                    <i class="bi bi-box-arrow-in-right"></i> Login
+                </a>
+            </div>
+        </div>
+        
+        <div class="col-lg-6">
+            <div class="text-center">
+                <img src="https://via.placeholder.com/500x400/2c5aa0/ffffff?text=Document+Summarizer" 
+                     alt="Document Summarizer" class="img-fluid rounded shadow">
+            </div>
+        </div>
+    </div>
+
+    <!-- Features Section -->
+    <div class="row py-5">
+        <div class="col-12 text-center mb-5">
+            <h2 class="fw-bold">Fitur Unggulan</h2>
+            <p class="text-muted">Analisis dokumen yang komprehensif dengan teknologi AI terdepan</p>
+        </div>
+        
+        <div class="col-lg-4 mb-4">
+            <div class="card h-100 text-center">
+                <div class="card-body">
+                    <i class="bi bi-upload text-primary fs-1 mb-3"></i>
+                    <h5 class="card-title">Multi-Format Support</h5>
+                    <p class="card-text">
+                        Mendukung berbagai format dokumen seperti PDF, DOCX, dan TXT. 
+                        Upload hingga 5 file sekaligus untuk analisis batch.
+                    </p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-lg-4 mb-4">
+            <div class="card h-100 text-center">
+                <div class="card-body">
+                    <i class="bi bi-robot text-primary fs-1 mb-3"></i>
+                    <h5 class="card-title">AI-Powered Analysis</h5>
+                    <p class="card-text">
+                        Menggunakan teknologi LM Studio untuk analisis mendalam. 
+                        Pertanyaan yang tidak relevan akan ditolak secara otomatis.
+                    </p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-lg-4 mb-4">
+            <div class="card h-100 text-center">
+                <div class="card-body">
+                    <i class="bi bi-shield-check text-primary fs-1 mb-3"></i>
+                    <h5 class="card-title">Secure & Private</h5>
+                    <p class="card-text">
+                        Data Anda aman dengan enkripsi password dan sistem role-based access. 
+                        Admin dapat mengelola semua pengguna dan dokumen.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- UNNES Section -->
+    <div class="row py-5 bg-light rounded">
+        <div class="col-12 text-center mb-4">
+            <h3 class="fw-bold text-primary">Khusus untuk UNNES</h3>
+            <p class="text-muted">
+                Sistem ini dirancang khusus untuk mendukung analisis dokumen akademik 
+                dan penelitian di lingkungan Universitas Negeri Semarang
+            </p>
+        </div>
+        
+        <div class="col-md-6 mb-3">
+            <div class="d-flex align-items-start">
+                <i class="bi bi-check-circle-fill text-success fs-4 me-3 mt-1"></i>
+                <div>
+                    <h6 class="fw-bold">Content Filtering</h6>
+                    <p class="text-muted mb-0">Sistem otomatis menolak pertanyaan yang tidak relevan</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Call to Action -->
+    <div class="row py-5 text-center">
+        <div class="col-12">
+            <h3 class="fw-bold mb-3">Siap untuk Memulai?</h3>
+            <p class="text-muted mb-4">Bergabunglah dengan sistem Document Summarizer dan tingkatkan produktivitas penelitian Anda</p>
+            <a href="{{ url_for('register') }}" class="btn btn-primary btn-lg me-3">
+                <i class="bi bi-rocket"></i> Mulai Sekarang
+            </a>
+            <a href="#features" class="btn btn-outline-secondary btn-lg">
+                <i class="bi bi-info-circle"></i> Pelajari Lebih Lanjut
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %} mt-1"></i>
+                <div>
+                    <h6 class="fw-bold">Fokus pada Paper Akademik</h6>
+                    <p class="text-muted mb-0">Analisis khusus untuk paper penelitian, skripsi, dan jurnal ilmiah</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-6 mb-3">
+            <div class="d-flex align-items-start">
+                <i class="bi bi-check-circle-fill text-success fs-4 me-3 mt-1"></i>
+                <div>
+                    <h6 class="fw-bold">Informasi UNNES</h6>
+                    <p class="text-muted mb-0">Database pengetahuan tentang Universitas Negeri Semarang</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-6 mb-3">
+            <div class="d-flex align-items-start">
+                <i class="bi bi-check-circle-fill text-success fs-4 me-3 mt-1"></i>
+                <div>
+                    <h6 class="fw-bold">Pertanyaan Terstruktur</h6>
+                    <p class="text-muted mb-0">Template pertanyaan yang sesuai dengan kebutuhan akademik</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-6 mb-3">
+            <div class="d-flex align-items-start">
+                <i class="bi bi-check-circle-fill text-success fs-4 me-3
